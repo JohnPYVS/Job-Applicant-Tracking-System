@@ -32,7 +32,7 @@ namespace Job_Applicant_Tracking_System
         public bool HasDegree;
         public bool HasCertification;
         public bool WillReocate;
-        public bool IsVetran;
+        public bool IsVeteran;
         public bool BackgroundCheckPassed;
         public bool PassedPhoneScreen;
 
@@ -92,7 +92,7 @@ namespace Job_Applicant_Tracking_System
 
             HasDegree = hasDegree;
             HasCertification = hasCertification;
-            IsVetran = isVeteran;
+            IsVeteran = isVeteran;
             BackgroundCheckPassed = backgroundCheckPassed;
             PassedPhoneScreen = passedPhoneScreen;
 
@@ -104,39 +104,48 @@ namespace Job_Applicant_Tracking_System
             AvailableStartDate = availableStartDate;
 
         }
+        // Instance 1
         public void CalculateQualification()
         {
-            if (PassedPhoneScreen && BackgroundCheckPassed)
-            {
-                if (YearsExperience >= 2)
-                {
-                    IsQualified = true;
-                }
-                else if (HasCertification && YearsExperience >= 1)
-                {
-                    IsQualified = true;
-                }
-                else
-                {
-                    IsQualified = false;
-                }
+            bool bachelorOrHigher = false;
 
+            if(EducationLevel == "Bachelor" || EducationLevel == "Master" || EducationLevel == "PhD")
+            {
+                bachelorOrHigher = true;
             }
+           
+      
+            if (!PassedPhoneScreen || !BackgroundCheckPassed)
+            {
+                IsQualified = false;
+            }
+            else if (bachelorOrHigher && YearsExperience >= 1.0)
+            {
+                IsQualified = true;
+            }
+            else if (HasCertification && YearsExperience >= 2.0)
+            {
+                IsQualified = true;
+            }
+            else if (IsVeteran && YearsExperience >= 0.5)
+            {
+                IsQualified = true;
+            }
+            // For everyone else
             else
             {
                 IsQualified = false;
             }
+                
+            
         }
+        // Instance 2
+        public string GettFullName()
+        {
+            return FirstName + " " + LastName;      
+        }
+
     
-       
-            
         
-
-       
-
-
-
-
-            
     }
 }
