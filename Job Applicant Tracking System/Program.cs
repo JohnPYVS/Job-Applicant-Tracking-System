@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 
 namespace Job_Applicant_Tracking_System
@@ -25,9 +26,11 @@ namespace Job_Applicant_Tracking_System
         public string Notes;
 
         public int Age;
-        public int ApplicationsSubmiited;
+        public int ApplicationsSubmitted;
         public int DesiredHoursPerWeek;
         public double YearsExperience;
+        public double ExpectedSalary;
+        public double RatingScore;
 
         public bool HasDegree;
         public bool HasCertification;
@@ -61,6 +64,8 @@ namespace Job_Applicant_Tracking_System
             int applicationsSubmitted,
             int desiredHoursPerWeek,
             double yearsExpereience,
+            double expectedSalary,
+            double ratingScore,
             bool hasDegree,
             bool hasCertification,
             bool willRelocate,
@@ -73,7 +78,7 @@ namespace Job_Applicant_Tracking_System
             DateTime appliedDate,
             DateTime availableStartDate
         )
-        {   
+        {
             RecordId = recordId;
             FirstName = firstName;
             LastName = lastName;
@@ -86,9 +91,11 @@ namespace Job_Applicant_Tracking_System
             Notes = notes;
 
             Age = age;
-            ApplicationsSubmiited = applicationsSubmitted;
+            ApplicationsSubmitted = applicationsSubmitted;
             DesiredHoursPerWeek = desiredHoursPerWeek;
             YearsExperience = yearsExpereience;
+            ExpectedSalary = expectedSalary;
+            RatingScore = ratingScore;
 
             HasDegree = hasDegree;
             HasCertification = hasCertification;
@@ -109,12 +116,12 @@ namespace Job_Applicant_Tracking_System
         {
             bool bachelorOrHigher = false;
 
-            if(EducationLevel == "Bachelor" || EducationLevel == "Master" || EducationLevel == "PhD")
+            if (EducationLevel == "Bachelor" || EducationLevel == "Master" || EducationLevel == "PhD")
             {
                 bachelorOrHigher = true;
             }
-           
-      
+
+
             if (!PassedPhoneScreen || !BackgroundCheckPassed)
             {
                 IsQualified = false;
@@ -136,16 +143,38 @@ namespace Job_Applicant_Tracking_System
             {
                 IsQualified = false;
             }
-                
-            
+
+
         }
         // Instance 2
         public string GettFullName()
         {
-            return FirstName + " " + LastName;      
+            return FirstName + " " + LastName;
         }
 
-    
-        
+        public void Display()
+        {
+            Console.WriteLine("-----------------------------------------");
+            Console.WriteLine("Record ID: " + RecordId);
+            Console.WriteLine("Name: " + GettFullName());
+            Console.WriteLine("Position: " + PositionApplied);
+            Console.WriteLine("Email: " + Email + " | Phone: " + PhoneNumber);
+            Console.WriteLine("Location: " + Address + ", " + City + ", " + State);
+            Console.WriteLine("Applied: " + AppliedDate.ToString("MM-yyyy-dd") +
+                              " | Available: " + AvailableStartDate.ToString("MM-yyyy-dd"));
+            Console.WriteLine("Education: " + EducationLevel + " | Employment Type: " + EmploymentType +
+                              " | Work Auth:" + WorkAuthorization);
+            Console.WriteLine("Age: " + Age + " | Years Exp: " + YearsExperience);
+            Console.WriteLine("Expected Salary: " + ExpectedSalary + " | Desired Hours/Week: " + DesiredHoursPerWeek);
+            Console.WriteLine("Rating Score: " + RatingScore.ToString("0.00"));
+            Console.WriteLine("Has Degree: " + HasDegree + " | Has Certification: " + HasCertification +
+                              " | Veteran: " + IsVeteran);
+            Console.WriteLine("Phone Screen: " + PassedPhoneScreen + " | Background Check: " + BackgroundCheckPassed);
+            Console.WriteLine("ApplicationsSubmitted: " + ApplicationsSubmitted);
+            Console.WriteLine("Qualified : " + IsQualified);
+            Console.WriteLine("Notes: " + Notes);
+            Console.WriteLine("-----------------------------------------");
+
+        }
     }
 }
