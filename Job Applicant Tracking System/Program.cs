@@ -11,7 +11,7 @@ namespace Job_Applicant_Tracking_System
             Console.WriteLine("==== Job Applicant Tracking System ====");
         }
     }
-    public class IntakeRecords
+    public class IntakeApplicant
     {
 
         public string RecordId;
@@ -49,7 +49,7 @@ namespace Job_Applicant_Tracking_System
         public bool IsQualified;
 
         // Constructor
-        public IntakeRecords(
+        public IntakeApplicant(
             string recordId,
             string firstName,
             string lastName,
@@ -152,6 +152,27 @@ namespace Job_Applicant_Tracking_System
             return FirstName + " " + LastName;
         }
 
+        public void CalculateRating()
+        {
+            double score = 0;
+
+            if (YearsExperience >= 5)
+                score += 2;
+            else if (YearsExperience >= 2)
+                score += 1;
+
+            if (HasDegree)
+                score += 1;
+            if (HasCertification)
+                score += 1;
+            if (PassedPhoneScreen)
+                score += 1;
+
+            if (score > 5)
+                score = 5;
+
+            RatingScore = score;
+        }
         public void Display()
         {
             Console.WriteLine("-----------------------------------------");
@@ -160,8 +181,8 @@ namespace Job_Applicant_Tracking_System
             Console.WriteLine("Position: " + PositionApplied);
             Console.WriteLine("Email: " + Email + " | Phone: " + PhoneNumber);
             Console.WriteLine("Location: " + Address + ", " + City + ", " + State);
-            Console.WriteLine("Applied: " + AppliedDate.ToString("MM-yyyy-dd") +
-                              " | Available: " + AvailableStartDate.ToString("MM-yyyy-dd"));
+            Console.WriteLine("Applied: " + AppliedDate.ToString("MM-dd-yyyy") +
+                              " | Available: " + AvailableStartDate.ToString("MM-dd-yyyy"));
             Console.WriteLine("Education: " + EducationLevel + " | Employment Type: " + EmploymentType +
                               " | Work Auth:" + WorkAuthorization);
             Console.WriteLine("Age: " + Age + " | Years Exp: " + YearsExperience);
@@ -175,6 +196,42 @@ namespace Job_Applicant_Tracking_System
             Console.WriteLine("Notes: " + Notes);
             Console.WriteLine("-----------------------------------------");
 
+        }
+   
+    }
+
+    class ApplicantTrackerApp
+    {
+        static void Main(string[] args)
+        {
+            List<IntakeApplicant> records = new List<IntakeApplicant>();
+
+            SeedSampleRecords(records);
+
+
+            static void SeedSampleRecords(List<IntakeApplicant> records)
+            {
+                records.Add(new IntakeApplicant(
+                    "AA-W0001", "John", "Doe", "johndoe@example.com", "559-1010",
+                    "17 Ace St", "Anaheim", "CA", "Junior Developer", "Strong Projects.",
+                    20, 2, 40,
+                    1, 70000, 5.0,
+                    true, false, false, true, true,
+                    "Bachelor", "Full-Time", "Citizen",
+                    new DateTime(03, 3, 2026), 
+                    new DateTime(03, 13, 2026)));
+                    
+
+                    
+                    
+            }
+            
+                
+                
+
+         
+
+            
         }
     }
 }
