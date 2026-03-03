@@ -248,12 +248,12 @@ namespace Job_Applicant_Tracking_System
             string position = ReadNonEmptyString("Position Applied: ");
             string notes = ReadNonEmptyString("Notes: ");
 
-            int age = ReadIntInRange("Age (18-80): ", 18, 80);
-            int applicationSubmitted = ReadIntInRange("Applications Submitted (0-100): ", 0, 100);
-            int desiredHours = ReadIntInRange("Desired Hours per week (1-80): ", 1, 80);
+            int age = ReadIntInRange("Age: ", 18, 80);
+            int applicationSubmitted = ReadIntInRange("Applications Submitted: ", 0, 100);
+            int desiredHours = ReadIntInRange("Desired Hours per week: ", 1, 80);
 
-            double yearsExperience = ReadDoubleMin("Years of Experience (0+): ", 0.0);
-            double expectedSalary = ReadDoubleMin("Expected Salary (0+): ", 0.0);
+            double yearsExperience = ReadDoubleMin("Years of Experience: ", 0.0);
+            double expectedSalary = ReadDoubleMin("Expected Salary: ", 0.0);
             double ratingScore = ReadDoubleInRange("Rating Score (0-5): ", 0.0, 5.0);
 
             bool hasDegree = ReadYesNo("Has a degree> (y/n): ");
