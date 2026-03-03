@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Job_Applicant_Tracking_System
@@ -591,7 +590,39 @@ namespace Job_Applicant_Tracking_System
             }
             static void SeedSampleRecords(List<IntakeApplicant> records)
             {
+                records.Add(new IntakeApplicant(
+                    "AA-W0001", "John", "Doe", "johndoe@example.com", "559-1010",
+                    "17 Ace St", "Anaheim", "CA", "Junior Developer", "Strong Project",
+                    20, 2, 40,
+                    1, 70000, 4.6,
+                    true, false, false, true, true,
+                    "Bachelor", "Full-Time", "Citizen",
+                    new DateTime(2026, 03, 3), new DateTime(2026, 03, 13)
+                ));
 
+                records.Add(new IntakeApplicant(
+                    "AA-W0002", "Brandon", "Blades", "brandonblades@example.com", "559-2021" +
+                    "5th Ave", "New York City", "IT", "Very motivated in learning new stuff",
+                    23, 3, 50,
+                    3, 80000, 4.6,
+                    true, true, false, true, true,
+                    "Master", "Fulltime", "Visa",
+                    new DateTime(2026, 03, 1), new DateTime(2026, 04, 2)
+                ));
+
+                records.Add(new IntakeApplicant(
+                    "AA-W0003", "Henry", "Park", "henrypark@example.com", "559-0234",
+                    "1234 Maple Ave", "Michigan", "Senior Developer", "Leadership, Detail oriented, and Strong Projects",
+                    34, 10, 70,
+                    10, 150000, 5.0,
+                    true, true, true, true, true,
+                    "PhD", "Contract", "Permanent Resident",
+                    new DateTime(2026, 03, 10), new DateTime(2026, 04, 5)
+                ));
+
+                   
+                    
+                    
             }
            
             
