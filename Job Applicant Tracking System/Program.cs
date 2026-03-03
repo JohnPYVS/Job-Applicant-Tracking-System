@@ -223,7 +223,7 @@ namespace Job_Applicant_Tracking_System
                         ViewAllApplicants(records);
                         break;
                     case 3:
-                        SearchRecords(records);
+                        SearchApplicants(records);
                         break;
                     case 4:
                         DisplayApplicantSummary(records);
@@ -235,7 +235,7 @@ namespace Job_Applicant_Tracking_System
             } while (choice != 5);
         }
 
-        static void AddNewRecord(List<IntakeApplicant> records)
+        static void AddNewApplicant(List<IntakeApplicant> records)
         {
             Console.WriteLine();
             Console.WriteLine("==== Add New Applicant ====");
@@ -251,7 +251,300 @@ namespace Job_Applicant_Tracking_System
             string position = ReadNonEmptyString("Position Applied: ");
             string notes = ReadNonEmptyString("Notes: ");
 
+            int age = ReadIntInRange("Age (18-80): ", 18, 80);
+            int applicationSubmitted = ReadIntInRange("Applications Submitted (0-100): ", 0, 100);
+            int desiredHours = ReadIntInRange("Desired Hours per week (1-80): ", 1, 80);
+
+            double yearsExperience = ReadDoubleMin("Years of Experience (0+): ", 0.0);
+            double expectedSalary = ReadDoubleMin("Expected Salary (0+): ", 0.0);
+            double ratingScore = ReadDoubleInRange("Rating Score (0-5): ", 0.0, 5.0);
+
+            bool hasDegree = ReadYesNo("Has a degree> (y/n): ");
+            bool hasCertificate = ReadYesNo("Has a certification? (y/n): ");
+            bool isVeteran = ReadYesNo("Veteran? (y/n): ");
+            bool backgroundCheckPassed = ReadYesNo("Background check passed? (y/n): ");
+            bool phoneScreenPassed = ReadYesNo("Phone screen passed? (y/n): ");
+
+            string educationLevel = ReadEducationLevel();
+            string employmentType = ReadEmploymentType();
+            string workAuth = ReadWorkAuthorization();
+
+            DateTime appliedDate = ReadDateWithTryCatch("Applied date (yyyy-MM-dd): ");
+            DateTime availableStartDate = ReadDatewithTryCatch("Available start date: ");
+
+
+            IntakeApplicant rec = new IntakeApplicant(
+            recordId, firstName, lastName, email, phone, address,
+            city, state, position, notes, age, applicationSubmitted,
+            desiredHours, yearsExperience, ratingScore,
+            hasDegree, hasCertificate, isVeteran, backgroundCheckPassed, phoneScreenPassed,
+            educationLevel, employmentType, workAuth, appliedDate, availableStartDate);            
+            
+            records.Add(rec);
+            Console.WriteLine("Applicant Record added successfully.");
         }
+        
+        static void ViewAllApplicants(List<IntakeApplicant> records)
+        {
+            Console.WriteLine();
+            Console.WriteLine("==== View All Applicants ====");
+
+            if (records.Count == 0)
+            {
+                Console.WriteLine("No records found.");
+                return;
+            }
+
+            foreach (IntakeApplicant rec in records)
+            {
+                rec.Display();
+            }
+        }
+
+        static void SearchApplicants(List<IntakeApplicant> records)
+        {
+            Console.WriteLine();
+            Console.WriteLine("==== Search Applicants ====");
+            if (records.Count == 0)
+            {
+                Console.WriteLine("No applicants to search.");
+                return;
+            }
+
+            string keyword = ReadNonEmptyString("Enter a name, email, record ID, or position keyword: ");
+            int matches = 0;
+
+            foreach (IntakeApplicant rec in records)
+            {
+                if (ContainsIgnoreCase(rec.RecordId, keyword) ||
+                    ContainsIgnoreCase(rec.FirstName, keyword) ||
+                    ContainsIgnoreCase(rec.LastName, keyword) ||
+                    ContainsIgnoreCase(rec.Email, keyword) ||
+                    ContainsIgnoreCase(rec.PositionApplied, keyword))
+                {
+                    matches++;
+                    rec.Display();
+                }
+            }
+
+            if (matches == 0)
+            {
+                Console.WriteLine("Matches found: " + matches);
+            }
+        }
+        static void DisplayApplicantSummary(List<IntakeApplicant> records)
+        {
+            Console.WriteLine();
+            Console.WriteLine("==== Applicant Summary ====");
+
+            if (records.Count == 0)
+            {
+                Console.WriteLine("No records available.");
+                return;
+            }
+
+            double totalSalary = 0.0;
+            double highestRating = -1.0;
+            string bestRatingName = "";
+            int qualifiedCount = 0;
+
+            for (int i = 0; i < records.Count; i++)
+            {
+                IntakeApplicant r = records[i];
+
+                r.CalculateQualification();
+
+                totalSalary += r.ExpectedSalary;
+
+                if (r.RatingScore > highestRating)
+                {
+                    highestRating = r.RatingScore;
+                    bestRatingName = r.GettFullName();
+                }
+                if (r.IsQualified)
+                {
+                    qualifiedCount++;
+                }
+            }
+
+            double avgSalary = totalSalary / records.Count;
+            double qualifiedPercent = (qualifiedCount * 100.0) / records.Count;
+
+            Console.WriteLine("Total Records: " + records.Count);
+            Console.WriteLine("Average Expected Salary: " + avgSalary.ToString("0.00"));
+            Console.WriteLine("Highest Rating Score: " + highestRating.ToString("0.00") + 
+                " (" + bestRatingName + ")");
+            Console.WriteLine("Qualified Applicants: " + qualifiedCount +
+                " (" + qualifiedPercent.ToString("0.00") + "%)");
+        }
+
+        static string ReadNonEmptyString(string prompt)
+        {
+            while (true)
+            {
+                Console.Write(prompt);
+                string s = Console.ReadLine();
+
+                if (s != null)
+                {
+                    s = s.Trim();
+                }
+                if (!string.IsNullOrEmpty(s))
+                {
+                    Console.WriteLine("Input cannot be empty.");
+                }
+            }
+        }
+       static int ReadIntInRange(string prompt, int min, int max)
+            {
+                while (true)
+                {
+                    Console.Write(prompt);
+                    string input = Console.ReadLine();
+
+                    int value;
+                    if (int.TryParse(input, out value))
+                    {
+                        if (value >= min && value <= max)
+                        {
+                            return value;
+                        }
+                    }
+                    Console.WriteLine("Enter a whole number between " + min + " and " + max + ".");
+                }
+           
+        
+            }
+            static double ReadDoubleMin(string prompt, double min)
+            {
+                while (true)
+                {
+                    Console.Write(prompt);
+                    string input = Console.ReadLine();
+
+                    double value;
+                    if (double.TryParse(input, out value))
+                    {
+                        if (value >= min)
+                        {
+                            return value;
+                        }
+                    }
+                    Console.WriteLine("Enter a number greater than or equal to " + min + ".");
+                }
+            }
+            static double ReadDoubleInRange(string prompt, double min, double max)
+            {
+             while (true)
+             {
+                Console.Write(prompt);
+                string input = Console.ReadLine();
+
+                double value;
+                if (double.TryParse(input, out value))
+                {
+                    if (value >= min)
+                    {
+                        return value;
+                    }
+                }
+                Console.WriteLine("Enter a number greater than or equal to " + max + ".");
+             }  
+            }
+            static bool ReadYesNo(string prompt)
+            {
+                while (true)
+                {
+                    Console.Write(prompt);
+                    string input = Console.ReadLine();
+
+                    if (input == null) input = "";
+                    input = input.Trim().ToLower();
+
+                    if (input == "y" || input == "yes") return true;
+                    if (input == "n" || input == "no") return false;
+                    Console.WriteLine("Enter y/n");
+                                                     
+                }
+            }
+            static string ReadEducationLevel()
+            {
+                Console.WriteLine("EducationLevel:");
+                Console.WriteLine("1. High School");
+                Console.WriteLine("2. Associate");
+                Console.WriteLine("3. Bachelor");
+                Console.WriteLine("4. Master");
+                Console.WriteLine("5. PhD");
+                int choice = ReadIntInRange("Select 1-5: ", 1, 5);
+                
+                switch (choice)
+                {
+                    case 1: return "High School";
+                    case 2: return "Associate";
+                    case 3: return "Bachelor";
+                    case 4: return "Master";
+                    case 5: return "PhD";
+                    default: return "High School";
+                }
+
+            
+            }
+            static string ReadEmploymentType()
+            {
+                Console.WriteLine("Employment Type:");
+                Console.WriteLine("1. Full-Time");
+                Console.WriteLine("2. Part-Time");
+                Console.WriteLine("3. Contract");
+                int choice = ReadIntInRange("Select 1-3: ", 1, 3);
+
+                switch (choice)
+                {
+                    case 1: return "Full-Time";
+                    case 2: return "Part-Time";
+                    case 3: return "Contract";
+                    default: return "Full-Time";
+                }
+
+            }
+            static string ReadWorkAuthorization()
+            {
+                Console.WriteLine("Work Authorization:");
+                Console.WriteLine("1. Citizen");
+                Console.WriteLine("2. Permanent Resident");
+                Console.WriteLine("3. Visa");
+                int choice = ReadIntInRange("Select 1-3: ", 1, 3);
+                
+                switch (choice)
+                {
+                case 1: return "Citizen";
+                case 2: return "Permanent Resident";
+                case 3: return "Visa";
+                default: return "Citizen"; 
+                } 
+
+
+            }
+            static DateTime ReadDateWithTryCatch(string prompt)
+            {
+                while (true)
+                {
+                    Console.Write(prompt);
+                    string input = Console.ReadLine();
+
+                    try
+                    {
+                        DateTime dt = DateTime.Parse(input);
+                        return dt.Date;
+                    }
+                    catch (Exception)
+                    {
+                    Console.WriteLine("Invalid date. Please use (yyyy-MM-dd) as an example");
+                    }
+                }
+            }
+            
+            
+        
             static void PrintMenu()
             {
                 Console.WriteLine();
@@ -264,32 +557,33 @@ namespace Job_Applicant_Tracking_System
             }
             
             static int ReadMenuChoice(int min, int max)
-        {
-            while (true)
             {
-                string input = Console.ReadLine();
-
-                int value;
-                if (int.TryParse(input, out value))
+                while (true)
                 {
-                    if (value >= min && value <= max)
+                    string input = Console.ReadLine();
+
+                    int value;
+                    if (int.TryParse(input, out value))
                     {
-                        return value;
+                        if (value >= min && value <= max)
+                        {
+                            return value;
+                        }
+                        else
+                        {
+                        Console.Write("Invalid choice. Enter a number " + min + "-" + max + ": ");
+                        }
                     }
                     else
                     {
-                        Console.Write("Invalid choice. Enter a number " + min + "-" + max + ": ");
+                        Console.Write("Invalid input. Enter a number" + min + "-" + max + ": ");
                     }
                 }
-                else
-                {
-                    Console.Write("Invalid input. Enter a number" + min + "-" + max + ": ");
-                }
             }
-        }
             static void SeedSampleRecords(List<IntakeApplicant> records)
             {
-                    
+                Console.WriteLine();
+                Console.WriteLine("==== ")
                     
             }
             
