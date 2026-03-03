@@ -103,7 +103,7 @@ namespace Job_Applicant_Tracking_System
             AppliedDate = appliedDate;
             AvailableStartDate = availableStartDate;
 
-            IsQualified = false;
+            CalculateQualification();
         }
         // Instance 1
         public void CalculateQualification()
@@ -562,6 +562,7 @@ namespace Job_Applicant_Tracking_System
         private void PrintMenu()
         {
             Console.WriteLine();
+            Console.WriteLine("==== Job Applicant Tracking System ====");
             Console.WriteLine("1) Add New Applicant");
             Console.WriteLine("2) View All Apllicants");
             Console.WriteLine("3) Search Records");
@@ -597,7 +598,7 @@ namespace Job_Applicant_Tracking_System
                 "AA-W0001", "John", "Doe", "johndoe@example.com", "559-1010",
                 "17 Ace St", "Anaheim", "CA", "Junior Developer", "Strong Project",
                  20, 2, 40,
-                 1.0, 70000, 4.6,
+                 1.0, 70000, 4.5,
                  true, false, false, true, true, true,
                  "Bachelor", "Full-Time", "Citizen",
                  new DateTime(2026, 03, 1), new DateTime(2026, 03, 27)
@@ -621,14 +622,7 @@ namespace Job_Applicant_Tracking_System
                  true, true, true, true, true, true,
                  "PhD", "Contract", "Permanent Resident",
                  new DateTime(2026, 03, 08), new DateTime(2026, 04, 5)
-            ));
-
-                   
-                    
-                    
+            ));                                        
         }
-           
-            
-          
     }
 }
