@@ -237,7 +237,7 @@ namespace Job_Applicant_Tracking_System
             Console.WriteLine();
             Console.WriteLine("==== Add New Applicant ====");
 
-            string recordId = ReadNonEmptyString("Record ID (ex: AA-W0005");
+            string recordId = ReadNonEmptyString("Record ID (ex: AA-W0005): ");
             string firstName = ReadNonEmptyString("First Name: ");
             string lastName = ReadNonEmptyString("Last Name: ");
             string email = ReadNonEmptyString("Email: ");
