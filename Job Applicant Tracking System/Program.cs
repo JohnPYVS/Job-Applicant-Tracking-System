@@ -270,7 +270,7 @@ namespace Job_Applicant_Tracking_System
             string workAuth = ReadWorkAuthorization();
 
             DateTime appliedDate = ReadDateWithTryCatch("Applied date (yyyy-MM-dd): ");
-            DateTime availableStartDate = ReadDatewithTryCatch("Available start date: ");
+            DateTime availableStartDate = ReadDateWithTryCatch("Available start date: ");
 
 
             IntakeApplicant rec = new IntakeApplicant(
@@ -396,25 +396,25 @@ namespace Job_Applicant_Tracking_System
             }
         }
        static int ReadIntInRange(string prompt, int min, int max)
+       {
+            while (true)
             {
-                while (true)
-                {
-                    Console.Write(prompt);
-                    string input = Console.ReadLine();
+                Console.Write(prompt);
+                string input = Console.ReadLine();
 
-                    int value;
-                    if (int.TryParse(input, out value))
+                int value;
+                if (int.TryParse(input, out value))
+                {
+                    if (value >= min && value <= max)
                     {
-                        if (value >= min && value <= max)
-                        {
-                            return value;
-                        }
+                       return value;
                     }
-                    Console.WriteLine("Enter a whole number between " + min + " and " + max + ".");
                 }
+                    Console.WriteLine("Enter a whole number between " + min + " and " + max + ".");
+            }
            
         
-            }
+       }
             static double ReadDoubleMin(string prompt, double min)
             {
                 while (true)
@@ -542,6 +542,15 @@ namespace Job_Applicant_Tracking_System
                     }
                 }
             }
+            static bool ContainsIgnoreCase(string source, string keyword)
+            {
+                if (source == null) source = "";
+                if (keyword == null) keyword = "";
+
+                source = source.ToLower();
+                keyword = keyword.ToLower();
+                return source.Contains(keyword);
+            }
             
             
         
@@ -582,10 +591,9 @@ namespace Job_Applicant_Tracking_System
             }
             static void SeedSampleRecords(List<IntakeApplicant> records)
             {
-                Console.WriteLine();
-                Console.WriteLine("==== ")
-                    
+
             }
+           
             
           
     }
